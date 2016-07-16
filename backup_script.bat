@@ -5,7 +5,6 @@
 
 title Backup Script
 color 0A
-mode con: cols=80 lines=40
 cls
 
 :: Drive letter is set to which ever drive the script runs from
@@ -15,13 +14,13 @@ set BACKUP_PATH=%BACKUP_DRIVE%\Backup\%USERNAME%
 set LOG_PATH=%BACKUP_DRIVE%\Backup\.logs
 
 set MULTI_THREAD_NUM=4
-set PROMPT_USER=true
+set PROMPT_USER=%1
 
-if "%PROMPT_USER%" == "false" (
+if "%PROMPT_USER%" == "no-prompt" (
 	GOTO START
 )
 
-echo Script will backup to drive "%BACKUP_DRIVE%"
+echo Files will backup to drive "%BACKUP_DRIVE%"
 set /p SHOULD_CONTINUE=Do you wish to continue with the backup (Y/[N])? 
 if /i "%SHOULD_CONTINUE%" NEQ "Y" GOTO :EOF
 
@@ -44,9 +43,9 @@ if not exist %CD%\.backup_directories (
 )
 
 for /f "tokens=*" %%A in (.backup_directories) do (
-	title Backup Script - %%A
+	title Backup Script [%%A to %BACKUP_PATH%\%%~nA]
 	robocopy %%A %BACKUP_PATH%\%%~nA /e /np /tee /mt:%MULTI_THREAD_NUM% /log+:%LOG_FILE%
 )
 
-title Backup Script
+title Backup Script [Complete]
 pause
