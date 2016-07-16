@@ -44,5 +44,9 @@ if not exist %CD%\.backup_directories (
 )
 
 for /f "tokens=*" %%A in (.backup_directories) do (
+	title Backup Script - %%A
 	robocopy %%A %BACKUP_PATH%\%%~nA /e /np /tee /mt:%MULTI_THREAD_NUM% /log+:%LOG_FILE%
 )
+
+title Backup Script
+pause
