@@ -31,9 +31,10 @@ if not exist %BACKUP_PATH% mkdir %BACKUP_PATH%
 if not exist %LOG_PATH% mkdir %LOG_PATH%
 
 :: Format date and time for log file name, and create empty log file
-for /f "tokens=2-4 delims=/ " %%a in ('date /t') do (set mydate=%%c-%%b-%%a)
-for /f "tokens=1-2 delims=/:" %%a in ("%TIME%") do (set mytime=%%a%%b)
-set LOG_FILE=%LOG_PATH%\%mydate%_%mytime%_backup.log
+for /f "tokens=2-4 delims=/ " %%a in ('date /t') do (set the_date=%%c-%%b-%%a)
+for /f "tokens=1-2 delims=/:" %%a in ("%TIME%") do (set the_time=%%a%%b)
+set the_time=%the_time: =0%
+set LOG_FILE="%LOG_PATH%\%the_date%_%the_time%_backup.log"
 echo. 2> %LOG_FILE%
 
 
@@ -43,8 +44,8 @@ if not exist %CD%\.backup_directories (
 )
 
 for /f "tokens=*" %%A in (.backup_directories) do (
-	title Backup Script [%%A to %BACKUP_PATH%\%%~nA]
-	robocopy %%A %BACKUP_PATH%\%%~nA /e /np /tee /mt:%MULTI_THREAD_NUM% /log+:%LOG_FILE%
+	title Backup Script [%%A to %BACKUP_PATH%\%%~nxA]
+	robocopy %%A %BACKUP_PATH%\%%~nxA /e /np /tee /mt:%MULTI_THREAD_NUM% /log+:%LOG_FILE%
 )
 
 title Backup Script [Complete]
