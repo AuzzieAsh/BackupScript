@@ -9,7 +9,6 @@ cls
 
 :: First parameter should be the backup drive letter.
 set BACKUP_DRIVE=%1
-set BACKUP_DRIVE=%BACKUP_DRIVE:\=%
 
 set BACKUP_PATH=%BACKUP_DRIVE%\Backup\%USERNAME%
 set LOG_PATH=%BACKUP_DRIVE%\Backup\.logs
